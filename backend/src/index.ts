@@ -2,6 +2,7 @@ import cors from "@elysiajs/cors";
 import openapi from "@elysiajs/openapi";
 import { Elysia } from "elysia";
 import { databaseModule } from "./commons/modules";
+import { exampleModule } from "./modules/example";
 import { logger } from "./utils/logger";
 
 const app = new Elysia()
@@ -12,6 +13,7 @@ const app = new Elysia()
 		}),
 	)
 	.use(databaseModule)
+	.use(exampleModule)
 	.get("/", () => "Hello Elysia")
 	.use(
 		openapi({
