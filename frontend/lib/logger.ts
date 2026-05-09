@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 export type LogLevel = "debug" | "info" | "warn" | "error" | "fatal";
 
 export interface ILogger {

@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: Logger need to accept any type of message and arguments */
 import pino from "pino";
 
 export type LogLevel = "debug" | "info" | "warn" | "error" | "fatal";

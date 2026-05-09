@@ -1,6 +1,7 @@
 import cors from "@elysiajs/cors";
 import openapi from "@elysiajs/openapi";
 import { Elysia } from "elysia";
+import { databaseModule } from "./commons/modules";
 import { logger } from "./utils/logger";
 
 const app = new Elysia()
@@ -10,7 +11,7 @@ const app = new Elysia()
 			credentials: true,
 		}),
 	)
-
+	.use(databaseModule)
 	.get("/", () => "Hello Elysia")
 	.use(
 		openapi({
@@ -36,5 +37,5 @@ process.on("unhandledRejection", (reason, promise) => {
 });
 
 export type App = typeof app;
+export * as requestTypes from "./commons/types";
 export * as databaseTypes from "./database/types";
-export * as requestTypes from "./types";

@@ -2,7 +2,6 @@
  * @lastModified 2025-02-04
  * @see https://elysiajs.com/recipe/drizzle.html#utility
  */
-/** biome-ignore-all lint/complexity/noBannedTypes: <explanation> */
 
 import { Kind, type TObject } from "@sinclair/typebox";
 import type { Table } from "drizzle-orm";
@@ -88,7 +87,7 @@ export const spreads = <
 
 	for (const key of keys) {
 		if (models[key]) {
-			newSchema[key] = spread(models[key]!, mode);
+			newSchema[key] = spread(models[key], mode);
 		}
 	}
 

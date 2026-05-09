@@ -12,4 +12,4 @@ export const user = pgTable("user", {
 	email: varchar("email").notNull().unique(),
 	salt: varchar("salt", { length: 64 }).notNull(),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
-}); 
+});
