@@ -5,6 +5,7 @@ import { databaseModule, errorHandlerModule } from "./commons/modules";
 import { errorExampleModule } from "./modules/error-example";
 import { exampleModule } from "./modules/example";
 import { logger } from "./utils/logger";
+
 const PORT = process.env.PORT || 3001;
 
 const app = new Elysia()

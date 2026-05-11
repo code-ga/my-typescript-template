@@ -1,8 +1,8 @@
 import Elysia, { Static } from "elysia";
+import { logger } from "../../utils/logger";
 import * as errors from "../errors";
 import { HttpError } from "../errors";
-import { logger } from "../../utils/logger";
-import { ErrorResponse } from "../types";
+import type { ErrorResponse } from "../types";
 
 export const errorHandlerModule = new Elysia({ name: "error-handler" })
 	.error(errors)
@@ -16,7 +16,7 @@ export const errorHandlerModule = new Elysia({ name: "error-handler" })
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		let message = (error as any).message || "Unknown Error";
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		let details: any = undefined;
+		let details: any;
 
 		if (error instanceof HttpError) {
 			status = error.status;
