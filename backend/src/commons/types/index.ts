@@ -47,5 +47,6 @@ export const errorResponseSchema = t.Object({
 			default: 500,
 		}),
 	),
+	details: t.Optional(t.Any()),
 });
 export type ErrorResponse = Static<typeof errorResponseSchema>;

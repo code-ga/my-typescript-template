@@ -1,9 +1,11 @@
 import cors from "@elysiajs/cors";
 import openapi from "@elysiajs/openapi";
 import { Elysia } from "elysia";
-import { databaseModule } from "./commons/modules";
+import { databaseModule, errorHandlerModule } from "./commons/modules";
+import { errorExampleModule } from "./modules/error-example";
 import { exampleModule } from "./modules/example";
 import { logger } from "./utils/logger";
+const PORT = process.env.PORT || 3001;
 
 const app = new Elysia()
 	.use(
@@ -12,17 +14,19 @@ const app = new Elysia()
 			credentials: true,
 		}),
 	)
+	.use(errorHandlerModule)
 	.use(databaseModule)
 	.use(exampleModule)
+	.use(errorExampleModule)
 	.get("/", () => "Hello Elysia")
 	.use(
 		openapi({
 			documentation: {},
 		}),
 	)
-	.listen(3000);
+	.listen(PORT);
 
-console.log(
+logger.info(
 	`🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`,
 );
 

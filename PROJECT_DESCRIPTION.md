@@ -31,6 +31,13 @@ This is a monolithic repository containing a Next.js frontend and an ElysiaJS ba
 - Registered the `/example` module in the main `backend/src/index.ts` app.
 - Added automated unit tests using `bun test` in `backend/src/modules/example/index.test.ts` to ensure stability and validate inputs/outputs.
 
+### Global Error Handling
+- Refactored backend error handling to use a centralized `errorHandlerModule` in `backend/src/commons/modules/error-handler.ts`.
+- Introduced custom HTTP error classes (`BadRequestError`, `UnauthorizedError`, `ForbiddenError`, `NotFoundError`, `InternalServerError`) in `backend/src/commons/errors/index.ts`.
+- Standardized error response using `errorResponseSchema` from `backend/src/commons/types/index.ts` to include: `success: false`, `message`, `status`, `timestamp`, and `details` (specifically for mapping validation issues).
+- Updated frontend `api.ts` `getEdenErrorMessage` utility to gracefully parse the new standardized response, parsing and concatenating validation field errors if `details` exist.
+- Created test endpoints under `/error-example` (`backend/src/modules/error-example/index.ts`) to verify error handling behavior.
+
 ## Future Updates & Ideas
 - Update environment variables configuration in frontend. Currently it seems to have remnants of Vite (`import.meta.env`) but uses Next.js (`process.env.NEXT_PUBLIC_...`).
 - Verify if any WebSocket proxying needs adjustments for ElysiaJS or Next.js HMR.

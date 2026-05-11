@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { treaty } from "@elysiajs/eden";
 import type { App, databaseTypes } from "@comic-sharing/backend";
 import type { Static, TSchema } from "@sinclair/typebox";
@@ -13,50 +15,31 @@ export const api = treaty<App>(BACKEND_URL, {
 /**
  * Safely extracts an error message from an Eden (treaty) response error.
  */
-
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export  function getEdenErrorMessage(error: any): string {
+export function getEdenErrorMessage(error: any): string {
 	if (!error) return "An unknown error occurred";
 	const value = error.value;
 	if (typeof value === "string") return value;
-	if (error.type === "validation") {
-		const errorValue = error as {
-			type: "validation";
-			on: string;
-			summary?: string;
-			message?: string;
-			found: unknown;
-			property?: string;
-			expected?: string;
-		};
-		const errorMessage =
-			errorValue.message ||
-			`${errorValue.property || "Field"} is invalid: expected ${errorValue.expected}, but found ${JSON.stringify(errorValue.found)}` ||
-			errorValue.summary ||
-			"A validation error occurred.";
-		return errorMessage;
+
+	if (value && typeof value === "object") {
+		if ("message" in value) {
+			const msg = (value as { message: string }).message;
+			
+			// Handle standard backend error response with validation details
+			if ("details" in value && Array.isArray((value as any).details)) {
+				const details = (value as any).details;
+				const detailMsgs = details
+					.map((d: any) => d.summary || d.message || `${d.path || "Field"} is invalid`)
+					.filter(Boolean)
+					.join(", ");
+				
+				if (detailMsgs) {
+					return `${msg}: ${detailMsgs}`;
+				}
+			}
+			return msg;
+		}
 	}
-	if (error.status === 422) {
-		const errorValue = error.value as {
-			type: "validation";
-			on: string;
-			summary?: string;
-			message?: string;
-			found: unknown;
-			property?: string;
-			expected?: string;
-		};
-		const errorMessage =
-			errorValue.message ||
-			`${errorValue.property || "Field"} is invalid: expected ${errorValue.expected}, but found ${JSON.stringify(errorValue.found)}` ||
-			errorValue.summary ||
-			"A validation error occurred.";
-		return errorMessage;
-	}
-	if (value && typeof value === "object" && "message" in value) {
-		return (value as { message: string }).message;
-	}
+
 	return JSON.stringify(value || error.message || error);
 }
 
