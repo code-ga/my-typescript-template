@@ -18,6 +18,9 @@ export const exampleModule = new Elysia({ prefix: "/example" }).get(
 		query: t.Object({
 			name: t.Optional(t.String()),
 		}),
+		// RECOMMENDED: Define response schemas for each status code (e.g., 200, 400, 404, 500) here
+		// instead of throwing HTTP errors from `backend/src/commons/errors/index.ts`.
+		// If you use `throw new Error(...)` or custom errors, the response shape won't be documented in Swagger/API Docs.
 		response: {
 			200: baseResponseSchema(
 				t.Object({
