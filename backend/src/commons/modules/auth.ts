@@ -1,8 +1,8 @@
 import { betterAuth, logger } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import Elysia from "elysia";
-import { databaseModule, type DatabaseType } from ".";
 import * as schema from "../../database/schema/auth";
+import { type DatabaseType, databaseModule } from ".";
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const createAuthConfig = (db: DatabaseType) =>

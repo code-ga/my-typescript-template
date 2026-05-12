@@ -2,12 +2,12 @@ import cors from "@elysiajs/cors";
 import openapi from "@elysiajs/openapi";
 import { Elysia } from "elysia";
 import { databaseModule, errorHandlerModule } from "./commons/modules";
+import { authenticationModule } from "./commons/modules/auth";
+import { loggerMiddleware } from "./commons/modules/logger";
 import { errorExampleModule } from "./modules/error-example";
 import { exampleModule } from "./modules/example";
-import { logger } from "./utils/logger";
-import { loggerMiddleware } from "./commons/modules/logger";
-import { authenticationModule } from "./commons/modules/auth";
 import { profileModule } from "./modules/profile";
+import { logger } from "./utils/logger";
 
 const PORT = process.env.PORT || 3001;
 
