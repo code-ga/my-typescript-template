@@ -5,6 +5,9 @@ import { databaseModule, errorHandlerModule } from "./commons/modules";
 import { errorExampleModule } from "./modules/error-example";
 import { exampleModule } from "./modules/example";
 import { logger } from "./utils/logger";
+import { loggerMiddleware } from "./commons/modules/logger";
+import { authenticationModule } from "./commons/modules/auth";
+import { profileModule } from "./modules/profile";
 
 const PORT = process.env.PORT || 3001;
 
@@ -15,16 +18,19 @@ const app = new Elysia()
 			credentials: true,
 		}),
 	)
-	.use(errorHandlerModule)
+	.use(loggerMiddleware)
+	.use(authenticationModule)
 	.use(databaseModule)
-	.use(exampleModule)
-	.use(errorExampleModule)
-	.get("/", () => "Hello Elysia")
+	.use(errorHandlerModule)
 	.use(
 		openapi({
 			documentation: {},
 		}),
 	)
+	.get("/", () => "Hello Elysia")
+	.use(profileModule)
+	.use(errorExampleModule)
+	.use(exampleModule)
 	.listen(PORT);
 
 logger.info(

@@ -28,6 +28,7 @@ This is a monolithic repository containing a Next.js frontend and an ElysiaJS ba
 - Created an example Elysia API endpoint (`/example`) in `backend/src/modules/example/index.ts`.
 - Followed Elysia best practices by isolating route definitions (`index.ts`) and type schemas (`model.ts`) inside the module.
 - Standardized the response shape using the shared `baseResponseSchema` from `backend/src/commons/types/index.ts`.
+- **RECOMMENDED PRACTICE**: Define response schemas for each status code (e.g., 200, 400, 404, 500) explicitly in the route definition's `response` object instead of throwing custom HTTP errors from `backend/src/commons/errors/index.ts`. Using `throw new Error(...)` causes the response shape to be omitted from the Swagger/API Docs.
 - Registered the `/example` module in the main `backend/src/index.ts` app.
 - Added automated unit tests using `bun test` in `backend/src/modules/example/index.test.ts` to ensure stability and validate inputs/outputs.
 

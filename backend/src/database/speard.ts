@@ -38,26 +38,29 @@ export const spread = <
 	mode?: Mode,
 ): Spread<T, Mode> => {
 	const newSchema: Record<string, unknown> = {};
-	let table: TObject | Table;
+	let table: TObject;
 
 	switch (mode) {
 		case "insert":
 		case "select":
 			if (Kind in schema) {
-				table = schema;
+				table = schema as TObject;
 				break;
 			}
 
-			table =
+			// drizzle-typebox bundles its own drizzle-orm copy, causing a structural
+			// mismatch with the top-level drizzle-orm Table type at compile time.
+			table = (
 				mode === "insert"
 					? createInsertSchema(schema)
-					: createSelectSchema(schema);
+					: createSelectSchema(schema)
+			) as TObject;
 
 			break;
 
 		default:
 			if (!(Kind in schema)) throw new Error("Expect a schema");
-			table = schema;
+			table = schema as TObject;
 	}
 
 	for (const key of Object.keys(table.properties))

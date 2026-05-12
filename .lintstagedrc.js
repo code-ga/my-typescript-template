@@ -8,7 +8,7 @@ export default {
     () => "bun --cwd frontend typecheck",
     "bun --cwd frontend eslint --fix"
   ],
-  "backend/src/database/schema/**/*.ts": [
-    () => "bun --cwd backend db:generate"
-  ]
+  // "backend/src/database/schema/**/*.ts": [
+  //   () => "bun --cwd backend db:generate"
+  // ]
 };
